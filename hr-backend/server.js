@@ -94,6 +94,19 @@ app.get('/employees', (req, res) => {
         });
 });
 
+// GET http://localhost:4001/employees/names?starts=kat
+app.get('/employees/names', (req, res) => {
+    const startsWith = req.query.starts;
+    const regexp = new RegExp(`^${startsWith}`, "i");
+    //Employee.find({'fullname': {$regex: regexp}},{"fullname": true, "_id": false}, function (err, employees) {
+    Employee.find({},{"fullname": true, "_id": false}, function (err, employees) {
+            res.set("Content-Type: application/json");
+        let allNames = employees.map(emp => emp.fullname);
+        allNames.sort();
+        res.status(200).send(allNames);
+    });
+});
+
 // GET http://localhost:4001/employees/1
 app.get('/employees/:identityNo', (req, res) => {
     let identityNo = req.params.identityNo;
