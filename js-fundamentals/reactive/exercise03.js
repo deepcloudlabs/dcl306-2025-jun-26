@@ -13,6 +13,7 @@ const observable = new Observable(
         });
         return function unsubscribe() {
             console.log("Observer has just unsubscribed.")
+            ws.close();
         }
     }
 );
