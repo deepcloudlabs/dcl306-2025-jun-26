@@ -10,6 +10,15 @@ export default function HrReducer(hrState, action) {
         case "PHOTO_CHANGED":
             newHrState.employee[action.name] = action.value;
             break;
+        case "EMPLOYEE_HIRED":
+            alert(`EMPLOYEE_HIRED: ${action.value}`);
+            break;
+        case "EMPLOYEE_FETCHED":
+            Object.assign(newHrState.employee, action.value);
+            break;
+        case "EMPLOYEE_UPDATED":
+            alert(`EMPLOYEE_UPDATED: ${action.value}`);
+            break;
     }
     return newHrState;
 }

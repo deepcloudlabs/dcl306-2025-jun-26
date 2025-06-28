@@ -9,10 +9,51 @@ import {useDepartments, useEmployee, useHrDispatcher} from "./providers/hr-provi
 
 function HrApp() {
   const hrDispatcher = useHrDispatcher();
-  const findEmployeeById = () => {}
-  const hireEmployee = () => {}
+  const employee = useEmployee();
+  const departments = useDepartments();
+
+  const findEmployeeById = () => {
+    fetch(`http://localhost:4001/employees/${employee.identityNo}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      }
+    }).then(res => res.json())
+        .then(fetchedEmployee => {
+          hrDispatcher({type: "EMPLOYEE_FETCHED", value: fetchedEmployee});
+        })
+  }
+  const hireEmployee = () => {
+    const employeeResource = {...employee, _id: employee.identityNo};
+    fetch("http://localhost:4001/employees",{
+       method: "POST",
+       body: JSON.stringify(employeeResource),
+       headers: {
+         "Content-Type": "application/json",
+         "Accept": "application/json"
+       }
+     })
+     .then(res => res.json())
+     .then(response => {
+       hrDispatcher({type: "EMPLOYEE_HIRED", value: response.status});
+     });
+  }
   const fireEmployee = () => {}
-  const updateEmployee = () => {}
+  const updateEmployee = () => {
+    const employeeResource = {...employee, _id: employee.identityNo};
+    fetch(`http://localhost:4001/employees`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(employeeResource)
+    }).then(res => res.json())
+    .then(response => {
+      hrDispatcher({type: "EMPLOYEE_UPDATED", value: response.status});
+    });
+  };
+
   const handlePhotoChange = (imageData) => {
     hrDispatcher({type: "PHOTO_CHANGED", value: imageData, name: "photo"});
   }
@@ -22,9 +63,6 @@ function HrApp() {
   const handleInputChange= (event) => {
     hrDispatcher({type: "INPUT_CHANGED", value: event.target.value, name: event.target.name});
   }
-  const employee = useEmployee();
-  const departments = useDepartments();
-
   return (
     <Container>
         <p></p>

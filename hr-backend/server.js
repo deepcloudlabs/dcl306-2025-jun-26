@@ -153,8 +153,8 @@ app.put("/employees", (req, res) => {
             updatedEmp[field] = emp[field];
         }
     }
-    console.log()
-    Employee.update(
+    console.log(updatedEmp)
+    Employee.updateOne(
         {'identityNo': emp.identityNo},
         {$set: updatedEmp},
         {upsert: false},
