@@ -1,7 +1,13 @@
 export default function HrReducer(hrState,action) {
+    // const newHrState = Object.assign({}, hrState);
     const newHrState = {...hrState};
-    switch(action.type) {
+    //newHrState.employee = Object.assign({},hrState.employee);
+    newHrState.employee = {...hrState.employee};
 
+    switch(action.type) {
+        case "INPUT_CHANGED":
+            newHrState.employee[action.name] = action.value;
+            break;
     }
     return newHrState;
 }

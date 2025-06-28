@@ -5,16 +5,19 @@ import SelectBox from "./components/common/select-box";
 import CheckBox from "./components/common/check-box";
 import Photo from "./components/common/photo";
 import Card from "./components/common/card";
-import {useDepartments, useEmployee} from "./providers/hr-provider";
+import {useDepartments, useEmployee, useHrDispatcher} from "./providers/hr-provider";
 
 function HrApp() {
+  const hrDispatcher = useHrDispatcher();
   const findEmployeeById = () => {}
   const hireEmployee = () => {}
   const fireEmployee = () => {}
   const updateEmployee = () => {}
   const handlePhotoChange = () => {}
   const handleCheckBoxChange= () => {}
-  const handleInputChange= () => {}
+  const handleInputChange= (event) => {
+    hrDispatcher({type: "INPUT_CHANGED", value: event.target.value, name: event.target.name});
+  }
   const employee = useEmployee();
   const departments = useDepartments();
 
