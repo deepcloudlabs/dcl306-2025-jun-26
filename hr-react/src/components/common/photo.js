@@ -19,6 +19,7 @@ export default function Photo({id, label, value, handleChange}){
                        style={{display: "none"}}></input>
                 <span className={"btn btn-lg btn-primary"}>File</span>
             </label>
+
         </div>
     )
 }

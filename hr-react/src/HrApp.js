@@ -13,8 +13,12 @@ function HrApp() {
   const hireEmployee = () => {}
   const fireEmployee = () => {}
   const updateEmployee = () => {}
-  const handlePhotoChange = () => {}
-  const handleCheckBoxChange= () => {}
+  const handlePhotoChange = (imageData) => {
+    hrDispatcher({type: "PHOTO_CHANGED", value: imageData, name: "photo"});
+  }
+  const handleCheckBoxChange= (event) => {
+    hrDispatcher({type: "CHECK_CHANGED", value: event.target.checked, name: event.target.name});
+  }
   const handleInputChange= (event) => {
     hrDispatcher({type: "INPUT_CHANGED", value: event.target.value, name: event.target.name});
   }
