@@ -65,7 +65,7 @@ function TraderApp() {
     const [symbol, setSymbol] = useState("BTCUSDT");
     const [symbols, setSymbols] = useState([]);
     const [isConnected, setConnected] = useState(false);
-    const [windowSize, setWindowSize] = useState(25);
+    const [windowSize, setWindowSize] = useState(10);
     const [prices, setPrices] = useState([]);
     const [trades, setTrades] = useState([]);
     const [chartData, setChartData] = useState(initialChartData);
@@ -104,13 +104,21 @@ function TraderApp() {
     useEffect(() => {
         const handleTradeEvent = (trade) => {
             if (!isConnected) return;
-            console.log(trade);
+            setTrades( prevTrades => [...prevTrades.slice(-windowSize),trade]);
+            setChartData( prevChartData => {
+                const nextChartData = {...prevChartData};
+                nextChartData.labels = [...prevChartData.labels.slice(-windowSize),trade.timestamp];
+                console.log(nextChartData.labels.length);
+                nextChartData.datasets = [...prevChartData.datasets];
+                nextChartData.datasets[0].data = [...prevChartData.datasets[0].data.slice(-windowSize),trade.price];
+                return nextChartData;
+            })
         };
         socket.on("ticker", handleTradeEvent);
         return () => {
             socket.off("ticker", handleTradeEvent);
         }
-    }, [isConnected]);
+    }, [isConnected,windowSize]);
 
     const connectToBinance = () => {
         setConnected(true);
@@ -153,7 +161,7 @@ function TraderApp() {
                 <p></p>
                 <Table headers={["Price","Quantity","Timestamp"]}
                        fields={["price", "quantity", "timestamp"]}
-                       keyField={"sequence"}
+                       keyField={"timestamp"}
                        values={trades}/>
             </Card>
         </Container>
